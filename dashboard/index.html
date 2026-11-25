@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — Pre-TGE Implied FDV, Launch Probability &amp; Farm Plans</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div>
+      <h1>TOKEN LAUNCH RADAR</h1>
+      <p class="subtitle">Implied FDV, Launch Probability &amp; Actionable Farm Plans — Frozen DefiLlama Snapshot (2026-11-14)</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="feed-badge" id="feedBadge">SNAPSHOT: 2026-11-14 · DEFILLAMA 758 → PRE-TGE TARGETS</span>
+    <button class="btn ghost" id="methodBtn" type="button">Methodology</button>
+    <div class="seg" role="group" aria-label="Trap visibility">
+      <button class="seg-btn active" id="cleanBtn" type="button">Clean Radar</button>
+      <button class="seg-btn" id="trapsBtn" type="button">Show Traps</button>
+    </div>
+    <span class="trap-pill" id="trapPill"></span>
+  </div>
+</header>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="ribbon">
+  <div class="panel scatter-panel">
+    <div class="panel-head"><h2>Launch Radar — Implied FDV × Launch Likelihood</h2><span class="panel-note">bubble size = TVL · dashed ring = curated watchlist · click a bubble for detail</span></div>
+    <div id="scatter"></div>
+  </div>
+  <div class="panel cat-panel">
+    <div class="panel-head"><h2>Expected Launch Value by Category</h2><span class="panel-note">solid = expected FDV · ghost = conditional FDV</span></div>
+    <div id="catBars"></div>
+  </div>
+</section>
+
+<section class="controls">
+  <div class="chips" id="presetChips"></div>
+  <div class="facets">
+    <input type="search" id="searchBox" placeholder="Search protocol or slug…" aria-label="Search protocol or slug">
+    <select id="catSel" aria-label="Category"></select>
+    <select id="chainSel" aria-label="Chain"></select>
+    <select id="tvlSel" aria-label="TVL band">
+      <option value="all">TVL: All</option>
+      <option value="500">$500M+</option>
+      <option value="100">$100M–$500M</option>
+      <option value="25">$25M–$100M</option>
+      <option value="5">$5M–$25M</option>
+    </select>
+    <select id="likeSel" aria-label="Likelihood tier">
+      <option value="all">Likelihood: All</option>
+      <option value="high">High (≥70%)</option>
+      <option value="med">Medium (35–69%)</option>
+      <option value="low">Low (10–34%)</option>
+      <option value="trap">Unlikely / Trap (&lt;10%)</option>
+    </select>
+    <select id="farmSel" aria-label="Farmability">
+      <option value="all">Farmability: All</option>
+      <option value="active-points">Active Points</option>
+      <option value="retail-open">Retail Open</option>
+      <option value="institutional">Caution / Institutional</option>
+      <option value="no-route">No Retail Route</option>
+    </select>
+    <span class="row-count" id="rowCount"></span>
+  </div>
+</section>
+
+<main class="panel table-panel">
+  <table id="board">
+    <thead><tr>
+      <th class="num">#</th>
+      <th>Protocol</th>
+      <th>Chains</th>
+      <th class="num sortable" data-sort="tvlUsd">TVL</th>
+      <th class="num sortable" data-sort="change7d">7d Δ</th>
+      <th class="num sortable" data-sort="ageMonths">Age</th>
+      <th class="num sortable" data-sort="impliedFdv">Implied FDV</th>
+      <th class="sortable" data-sort="p">Launch Prob</th>
+      <th class="num sortable sorted" data-sort="ev">Expected FDV ↓</th>
+      <th>Farm Plan</th>
+    </tr></thead>
+    <tbody id="boardBody"></tbody>
+  </table>
+</main>
+
+<footer class="foot">
+  <p>Implied valuations are model estimates from a frozen snapshot, not price targets. Protocols flagged TOKEN TRAP, PARENT TOKEN or NO-TGE record no new token to launch — they are kept on the board, flagged, rather than silently deleted. Not financial advice.</p>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-label="Protocol detail"></aside>
+
+<div class="modal-wrap" id="methodModal" hidden>
+  <div class="modal">
+    <button class="btn ghost modal-x" id="methodClose" type="button">Close</button>
+    <h2>How This Radar Ranks Pre-TGE Launches</h2>
+    <p>All metrics are computed from a frozen DefiLlama snapshot (2026-11-14, 758 protocols with TVL ≥ $5M). For each protocol lacking a recorded token, we estimate <strong>Conditional Implied FDV</strong> by multiplying TVL by its category's tokenized-peer median mcap/TVL (with fee-take-rate haircuts for thin categories such as Risk Curators at 0.045× and Onchain Capital Allocators at 0.108×), applying a conservative 1.60× circulating-to-FDV lift, and adjusting for 7-day TVL momentum (0.80×–1.25×), protocol age maturity (0.85×–1.05×), and chain liquidity quality/breadth (0.80×–1.25×). We then multiply Conditional Implied FDV by <strong>Launch Likelihood (P_launch, 2%–95%)</strong> to rank the board by <strong>Expected Launch Value (EV_FDV)</strong>. Protocols that are already live stablecoins, modules of parent-tokenized chains, or non-tokenizable public goods are transparently retained with <strong>TOKEN TRAP</strong> or <strong>NO-TGE</strong> flags rather than silently deleted. <em>Not financial advice; implied valuations are model estimates, not price targets.</em></p>
+    <h3>The formula</h3>
+    <p class="mono">Implied FDV = TVL × M_base(category) × 1.60 × F_growth(7d) × F_age(listed_at) × F_chain(primary chains)<br>EV = Implied FDV × P_launch&nbsp;&nbsp;·&nbsp;&nbsp;P_launch = curated override where researched, else clamp(P_cat + Δ_age + Δ_eco + Δ_mom)</p>
+    <h3>Reading the board</h3>
+    <p>The 40 watchlist protocols above the $50M floor carry hand-researched Curated Intel: verified launch likelihoods, trap audits and bespoke farm plans. Rows beyond the watchlist are Auto-Scored by the same formula from snapshot fields only, with templated plans — they are labelled, never passed off as hand-audited. Chain footprint is scored on a protocol's three primary deployments; long-tail chain listings are treated as bridge dust, not liquidity.</p>
+  </div>
+</div>
+
+<script src="radar-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

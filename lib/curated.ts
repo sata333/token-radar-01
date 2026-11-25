@@ -1,0 +1,548 @@
+// Curated intel for the 40 watchlist protocols.
+//
+// Every entry here was hand-researched: a curated launch probability (pFinal)
+// that overrides the model's automated heuristic where public facts supersede
+// snapshot fields, a farmability verdict, risk badges, a one-line rationale
+// for the override, and a concrete four-step farm plan. The model in
+// lib/model.ts falls back to its automated heuristic (pAuto) for every
+// protocol that is not listed here, and badges those rows "Auto-Scored".
+
+export type FarmStatus = 'active-points' | 'retail-open' | 'institutional' | 'no-route';
+
+export interface CuratedEntry {
+  /** Curated launch probability, 0.02 to 0.95. */
+  pFinal: number;
+  /** Risk / trap badges shown on the board, e.g. 'TOKEN TRAP'. */
+  badges: string[];
+  /** Farmability class used by the board's status pill. */
+  farmStatus: FarmStatus;
+  /** Colour-coded verdict banner text for the detail view. */
+  verdict: string;
+  /** One-line justification for the curated override. */
+  note: string;
+  /** The farm plan: four concrete steps, each 20 to 600 characters. */
+  steps: string[];
+}
+
+export const CURATED: Record<string, CuratedEntry> = {
+  'steakhouse-financial': {
+    pFinal: 0.2,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'European B2B advisory and curation firm with institutional fee mandates and no points campaign; launch odds capped at 0.20.',
+    steps: [
+      "Deposit USDC, USDT, or WETH into Steakhouse-curated MetaMorpho vaults ('STEAKUSDC' or Steakhouse High Yield USDC) via the Morpho app on Ethereum or Base for transparent lending yield.",
+      'Monitor Morpho rewards and Merkl campaigns attached to Steakhouse vaults on Base and Robinhood Chain; claim MORPHO or partner incentives periodically to boost net APY while preserving optionality.',
+      'Prefer Base over Ethereum mainnet for deposits under $25,000 so gas costs do not erode yield during rebalancing, and verify the exact vault address (STEAKUSDC) before approving spend.',
+      'Avoid expecting a guaranteed native Steakhouse governance airdrop—Steakhouse is an institutional advisory firm with no points program, so size positions purely for risk-adjusted lending yield.',
+    ],
+  },
+  gauntlet: {
+    pFinal: 0.15,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'US-domiciled VC-backed risk-modeling company with a strong regulatory disincentive to launch a governance token.',
+    steps: [
+      "Supply USDC, USDT, or WETH into Gauntlet's risk-segmented MetaMorpho vaults ('GTUSDC' Prime for conservative blue-chip collateral, or Core for higher yield) on Ethereum, Base, or BNB Chain.",
+      'Access Gauntlet vaults via Morpho or integrated front-ends like Uniswap Earn on Base to earn native lending yield plus ongoing MORPHO and ecosystem Merkl reward streams.',
+      "Track utilization and collateral caps on Gauntlet's Core vaults before allocating large sums, as sudden borrower spikes can temporarily constrain instant liquidity withdrawals.",
+      'Do not farm Gauntlet expecting a standalone TGE—Gauntlet is a US-domiciled institutional risk company with low token propensity; treat any future vault incentive strictly as upside.',
+    ],
+  },
+  veda: {
+    pFinal: 0.85,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Active Points Program',
+    note: 'Confirmed Veda Points engine across BoringVault partner strategies on Ethereum, Ink and Optimism; launch likelihood raised to 0.85.',
+    steps: [
+      'Deposit ETH, wstETH, LBTC, or USDC into Veda-powered "BoringVault" / Earn strategies on Ethereum, Ink, or Optimism (including partner vaults like Ether.fi Liquid and Lombard DeFi Vault).',
+      'Prioritize stacked-points vaults on Ethereum and Ink where a single ERC-4626 position simultaneously accrues Veda Points alongside partner ecosystems (Ink Points, Lombard Lux, or Ether.fi/Symbiotic rewards).',
+      'Maintain continuous time-weighted balances rather than short-term cycling, since Veda Points scale with USD-equivalent balance multiplied by holding duration across epochs.',
+      'Avoid depositing into illiquid or exotic-collateral vaults with long asynchronous withdrawal queues if you need rapid exit liquidity, and check redemption solver fees before bridging between Ink and Ethereum.',
+    ],
+  },
+  usdd: {
+    pFinal: 0.02,
+    badges: ['TOKEN TRAP'],
+    farmStatus: 'no-route',
+    verdict: 'DATA TRAP — Already-Live Stablecoin; Do Not Price as New TGE',
+    note: "USDD is TRON DAO Reserve's already-live decentralized stablecoin; there is no unlaunched governance token to price.",
+    steps: [
+      'Recognize that USDD is an already-live decentralized stablecoin managed by TRON DAO Reserve—there is no unlaunched governance token or points airdrop to farm by minting or holding USDD.',
+      'If you specifically want yield on existing TRON or BNB Chain capital, you can supply USDD to JustLend DAO or audited stablecoin pools, but treat it purely as yield farming rather than TGE speculation.',
+      'Avoid rotating fresh capital into USDD CDP vaults on Ethereum or Tron solely because USDD appears high on TVL screens; verify backing composition and peg-stability reserves before holding size.',
+      'Reallocate dedicated airdrop-farming capital to genuine pre-TGE synthetic dollars with active points programs (such as Tori Finance, Saturn, infiniFi, or Yuzu Money) instead.',
+    ],
+  },
+  'nonce-capital': {
+    pFinal: 0.2,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Institutional curator earning vault fee revenue; no public points program or retail TGE commitment.',
+    steps: [
+      "Locate Nonce Capital's curated lending vaults on Morpho or Euler across Ethereum and Optimism and inspect the underlying collateral whitelist, oracle feeds, and curator performance fee.",
+      'Supply USDC or blue-chip ETH collateral on Optimism for lower gas overhead if targeting secondary Merkl/protocol incentives alongside base lending yield.',
+      "Watch 7-day TVL flows carefully—Nonce Capital launched recently ('2026-09-30') and saw a '-9.74%' 7d pullback, indicating concentrated whale deposits that can shift vault APY rapidly.",
+      'Avoid treating Nonce Capital as a high-probability token launch; like most risk curators, it operates on vault fee revenue with no public points program or retail TGE commitment.',
+    ],
+  },
+  upshift: {
+    pFinal: 0.88,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Season 2 Points Live',
+    note: "Active Season 2 points program with strong '+8.31%' 7d TVL inflows; launch likelihood raised to 0.88.",
+    steps: [
+      "Connect to 'upshift.finance' and deposit USDC, cbBTC, wstETH, or rsETH into curated ERC-4626 vaults on Ethereum, Flare, or Stellar to join Upshift's active Season 2 Points program.",
+      'Target boost-multiplier vaults that stack Upshift Points on top of underlying partner campaigns (e.g., Ethena, Resolv, Flare FAssets/FXRP, or partner basis-trading vaults) to maximize points per dollar.',
+      'Check whether your Upshift vault receipt tokens are composable on Pendle or lending markets to multiply points exposure without adding directional market risk.',
+      'Avoid ignoring vault lockup windows and curator fee schedules—some high-APY institutional vaults on Upshift use epoch-based asynchronous redemptions that take several days to settle.',
+    ],
+  },
+  'bittensor-dtao': {
+    pFinal: 0.02,
+    badges: ['TOKEN TRAP'],
+    farmStatus: 'no-route',
+    verdict: 'DATA TRAP — Denominated in Live TAO; No New Token',
+    note: "dTAO is Bittensor's native emission upgrade; its stakes are denominated in the already-trading TAO token.",
+    steps: [
+      'Do not farm Bittensor dTAO expecting a new "dTAO DEX governance token"—dTAO is Bittensor\'s native emission upgrade where existing \'TAO\' stakes into subnet-specific AMM pools (\'alpha\' tokens).',
+      "If you want legitimate Bittensor ecosystem exposure, stake 'TAO' into high-performing AI subnets via official Bittensor wallets (Polkadot.js/Taostats/Bittensor wallet) to earn subnet emissions.",
+      'Avoid blindly buying thin-liquidity subnet alpha tokens chasing high headline APYs; subnet pool slippage and rapid emission dilution routinely wipe out naive liquidity providers.',
+      "Exclude dTAO from your pre-TGE airdrop allocation and treat it strictly as a liquid AI-network staking trade denominated in 'TAO'.",
+    ],
+  },
+  onre: {
+    pFinal: 0.78,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — OnRe Points Live',
+    note: 'Active OnRe Points program on a composable Solana reinsurance-backed dollar; launch likelihood set to 0.78.',
+    steps: [
+      "Acquire or mint 'ONyc' (OnRe's reinsurance-backed yield dollar) on Solana using USDC via 'onre.finance' or audited Solana DEX aggregators like Jupiter.",
+      "Enroll in the OnRe Points program and hold 'ONyc' in a non-custodial Solana wallet, or deploy it into supported Solana DeFi vaults and liquidity pools that carry OnRe Points multipliers.",
+      'Check eligibility and regional compliance terms before direct minting/redemption, as institutional reinsurance collateral pools can impose jurisdictional KYC on primary redemptions.',
+      "Avoid over-leveraging 'ONyc' in thin lending loops; reinsurance underwriting carries tail-risk event exposure (catastrophe claims) that differs fundamentally from T-bill backed stablecoins.",
+    ],
+  },
+  rockawayx: {
+    pFinal: 0.15,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Established crypto venture and credit firm; a standalone retail curator token is unlikely.',
+    steps: [
+      'Deposit USDC or SOL-ecosystem assets into RockawayX-curated vaults on Kamino (Solana) or Morpho (Ethereum) and check Pharos deployments for emerging chain-ecosystem points.',
+      'Favor RockawayX vaults on Solana (Kamino) or Pharos where depositors capture underlying lending/chain incentives alongside actively rebalanced institutional risk parameters.',
+      'Verify vault fee tiers and underlying RWA/credit collateral allocations before committing size, as RockawayX blends DeFi lending with structured credit strategies.',
+      'Avoid farming RockawayX purely for a standalone RockawayX governance token—RockawayX is an established crypto venture and credit firm unlikely to issue a retail curator token.',
+    ],
+  },
+  symbiotic: {
+    pFinal: 0.85,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Points Live Since 2024',
+    note: 'Active points program since 2024, Paradigm/Pantera/Coinbase Ventures cap table, direct EigenLayer competitor; held below 0.95 because no official TGE date is set.',
+    steps: [
+      "Deposit wstETH, rETH, sUSDe, or Liquid Lane supported collateral into curated vaults on 'app.symbiotic.fi' (Ethereum mainnet) to accumulate ongoing Symbiotic Points.",
+      'Select active vaults curated by reputable operators (e.g., Mellow, Ether.fi, or institutional curators) that also distribute External Rewards from partner networks securing themselves on Symbiotic.',
+      'Use liquid restaking wrappers built on Symbiotic (like Mellow LRTs) if you want secondary DeFi composability on Pendle or Curve to multiply Symbiotic Points per ETH deposited.',
+      'Avoid concentrating 100% of your stake in unproven slashable vaults or ignoring the unbonding delay; note Symbiotic has run points since June 2024 without a confirmed TGE date, so manage opportunity cost.',
+    ],
+  },
+  opentrade: {
+    pFinal: 0.1,
+    badges: ['INSTITUTIONAL / KYC'],
+    farmStatus: 'institutional',
+    verdict: 'INSTITUTIONAL / KYC — No Realistic Retail Farm Route',
+    note: 'London-based B2B institutional RWA infrastructure provider serving fintechs, neobanks and KYC-verified treasuries; no retail points program.',
+    steps: [
+      'Recognize that OpenTrade is a London-based B2B institutional RWA infrastructure provider serving fintechs, neobanks, and KYC-verified treasuries—not an open retail airdrop farm.',
+      "Retail users cannot freely permissionlessly deposit into OpenTrade's primary commercial-paper or T-bill vaults on Ethereum or Avalanche without onboarding through an institutional partner app.",
+      "If you seek Plume-ecosystem exposure connected to OpenTrade's Plume deployment, interact via Plume's public retail Nest vaults instead—while noting 'PLUME' is already live.",
+      'Avoid wasting time on unofficial "OpenTrade airdrop" links or Discord quests; there is no retail points program and a high likelihood of phishing impersonation.',
+    ],
+  },
+  hyperithm: {
+    pFinal: 0.2,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Asian institutional quant and trading firm unlikely to TGE itself; the farming value is Monad ecosystem incentive stacking.',
+    steps: [
+      'Deposit USDC, WETH, or MON-paired assets into Hyperithm-curated lending vaults on Monad (via Morpho/Euler deployments), Ethereum, or Arbitrum.',
+      'Prioritize the Monad deployment over Ethereum mainnet: while Hyperithm itself is an Asian institutional quant/trading firm unlikely to TGE, Monad vault TVL often farms Monad ecosystem incentives.',
+      'Review collateral parameters on Monad vaults carefully, as emerging-chain liquidity is thinner and liquidation slippage during drawdowns is higher than on Ethereum or Arbitrum.',
+      'Avoid dedicating pure airdrop capital solely for a hypothetical Hyperithm token; treat vault deposits as yield plus Monad/protocol-layer farming.',
+    ],
+  },
+  'lightning-network': {
+    pFinal: 0.02,
+    badges: ['NO-TGE'],
+    farmStatus: 'no-route',
+    verdict: 'NO-TGE INFRA — Open-Source Protocol, No Issuer, No Token',
+    note: 'Open-source Bitcoin Layer-2 payment software with no corporate issuer, foundation token or token rationale.',
+    steps: [
+      'Do not lock BTC into Lightning Network channels expecting a "LIGHTNING" governance token or retroactive airdrop—Lightning is open-source Bitcoin Layer-2 payment software with no issuer or foundation token.',
+      'Running a Lightning routing node earns modest satoshi routing fees (typically <1%-2% APY) while requiring active channel liquidity management, watchtowers, and hot-wallet operational security.',
+      'Avoid any website, wallet, or social campaign promising a "Lightning Network Token Claim" or "LN Points Season"—100% of such promotions are scams targeting Bitcoin holders.',
+      'If you want genuine BTCFi pre-TGE farming, look to tokenized/points-driven Bitcoin DeFi protocols rather than core Bitcoin payment-channel infrastructure.',
+    ],
+  },
+  'plume-vaults': {
+    pFinal: 0.05,
+    badges: ['PARENT TOKEN · PLUME'],
+    farmStatus: 'no-route',
+    verdict: 'DATA TRAP — Parent Token PLUME Already Trades',
+    note: 'Nest Credit is the flagship RWA vault layer of Plume Network, whose native PLUME token is already live; no separate new TGE is expected.',
+    steps: [
+      'Note that Plume Vaults (Nest Credit) is the flagship RWA vault layer of Plume Network, whose native PLUME token is already live—do not expect a separate new L1 TGE.',
+      "To farm ongoing Plume/Nest ecosystem rewards and institutional RWA yield, deposit USDC into Nest vaults ('nTBILL', 'nOPAL', or private-credit vaults) on Plume, Ethereum, or Solana (including ether.fi integrations).",
+      'Deploy composable Nest receipt tokens across Plume DeFi lending or LP venues to stack secondary ecosystem incentives on top of base treasury/credit yields.',
+      "Avoid locking funds in long-duration private credit vaults without verifying redemption cadence, and discount airdrop expectations since 'PLUME' already trades on secondary markets.",
+    ],
+  },
+  'k3-capital': {
+    pFinal: 0.22,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'No confirmed points campaign; benchmark net APY directly against competing curators instead of a native token launch.',
+    steps: [
+      "Deposit stablecoins or blue-chip collateral into K3 Capital's curated vaults on Morpho or Euler across Monad, Ethereum, and Optimism.",
+      "Route deposits through K3's Monad or Optimism vaults rather than Ethereum mainnet to minimize gas drag and capture active chain-level or Merkl reward distributions.",
+      "Inspect each vault's collateral composition and borrow utilization—K3 Capital experienced an '-8.90%' 7d TVL dip, so confirm healthy liquidity buffers before depositing.",
+      'Avoid sizing K3 Capital vaults purely for a native K3 token launch; there is no confirmed points campaign, so benchmark net APY directly against competing curators.',
+    ],
+  },
+  'hive-protocol': {
+    pFinal: 0.05,
+    badges: ['PARENT TOKEN · B2'],
+    farmStatus: 'no-route',
+    verdict: 'DATA TRAP — Parent Token B2 Already Trades',
+    note: "Hive Protocol is B² Network's native BTC staking module inside the already-live B2 token ecosystem, unrelated to the Hive DPoS social blockchain.",
+    steps: [
+      "Recognize that Hive Protocol on BSquared is B² Network's native BTC staking/yield module tied to the existing B2 token ecosystem (and unrelated to the Hive DPoS social blockchain).",
+      "If participating for ongoing B² Network farming ('B² Buzz' / Hive staking), deposit BTC or partner BTC LSTs (Babylon, Lombard, Bedrock) on BSquared to earn 'B2' rewards plus partner points.",
+      "Verify unstaking lock periods and bridge withdrawal timelines back to Bitcoin L1 before committing BTC, as L2 bridge queues can tighten during '-10%+' weekly TVL drawdowns.",
+      "Avoid valuing Hive Protocol as an unlaunched standalone Layer-1 TGE; treat rewards strictly as incremental 'B2' yield.",
+    ],
+  },
+  r25: {
+    pFinal: 0.65,
+    badges: [],
+    farmStatus: 'retail-open',
+    verdict: 'PRE-TGE FARM — Retail Route Open on Sui / Pharos',
+    note: 'Growing Sui/Pharos RWA stablecoin infrastructure with potential ecosystem incentives; launch likelihood set to 0.65.',
+    steps: [
+      "Mint or acquire R25's RWA-backed dollar assets ('rcUSD' / 'rcUSDP') on Sui (or Pharos where publicly accessible) using USDC via 'r25.xyz' or integrated Sui DEXs.",
+      "Supply 'rcUSD' into R25 yield vaults or Sui DeFi integrations (lending/LP pools) to accumulate underlying RWA credit yields alongside potential R25 and Sui/Pharos ecosystem incentives.",
+      'Check whether primary minting/redemption requires KYC verification and compare secondary-market swap spreads on Sui DEXs before entering or exiting large clips.',
+      "Avoid depositing into opaque structured-credit tranches without reviewing R25's reserve attestations and redemption settlement T+N timelines.",
+    ],
+  },
+  b14g: {
+    pFinal: 0.65,
+    badges: ['SEC ALERT'],
+    farmStatus: 'retail-open',
+    verdict: 'SPECULATIVE FARM — Security Incident; Cap Position Size',
+    note: "Active points campaign, but unauthorized CORE staking withdrawals drove a '-28.53%' 7d TVL drawdown; Babylon tracks were unaffected.",
+    steps: [
+      "Review b14g's post-incident audit and Core DAO's Fermi recovery reports thoroughly before depositing—b14g suffered unauthorized CORE staking withdrawals, driving its '-28.53%' 7-day TVL drop.",
+      'If farming b14g\'s Bitcoin restaking / dual-staking points campaign, strongly prefer native Babylon time-locked BTC staking tracks (which remained unaffected during the CORE incident) over custodial/EVM CORE contracts.',
+      "Keep position sizing strictly capped as a speculative small-allocation bet and monitor withdrawal contract solvency and timelock expirations closely on 'b14g.xyz'.",
+      'Avoid chasing aggressive dual-staking APY boosts on CORE until full independent post-mortem remediation and fresh smart-contract audits are published.',
+    ],
+  },
+  clearstar: {
+    pFinal: 0.22,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Clearstar Labs is an institutional risk curator without a confirmed native token program.',
+    steps: [
+      "Deposit 'USDT0', 'FXRP', or 'USDC' into Clearstar-curated Morpho vaults on Flare (accessible via Mystic / Morpho front-ends) or Base to capture lending yield plus Flare ecosystem rewards.",
+      "Focus on Clearstar's Flare vaults over Ethereum if you are already farming Flare FAssets ('FXRP') or stacking multi-protocol Flare DeFi incentives.",
+      "Check vault borrow utilization and collateral caps after Clearstar's '-10.09%' 7d TVL contraction to confirm instant withdrawal liquidity remains available.",
+      'Avoid treating Clearstar as a dedicated pre-TGE airdrop target; Clearstar Labs is an institutional risk curator without a confirmed native token program.',
+    ],
+  },
+  saturn: {
+    pFinal: 0.8,
+    badges: ['WRAPPER'],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Gravity Points Season 1 (Wrapper Risk)',
+    note: 'Genuine Season 1 Gravity Points farm on Monad/Ethereum, but USDat wraps PYUSDx and Strategy STRC credit, so the discounted wrapper multiple applies.',
+    steps: [
+      "Mint or swap into 'USDat' via 'saturn.credit' on Ethereum, Monad, or BNB Chain to enroll in Saturn's Gravity Points (Season 1) campaign.",
+      "Stake 'USDat' into 'sUSDat' for digital-credit yield (backed by tokenized T-bills and Strategy's STRC credit exposure), or deploy 'USDat'/'sUSDat' on Pendle (YT/LP) and Monad DeFi integrations for boosted Gravity Points multipliers.",
+      'Prefer Monad or BNB Chain for smaller clips (<$10k) to minimize gas while simultaneously stacking Monad ecosystem activity alongside Gravity Points.',
+      "Avoid assuming 'USDat' carries zero credit risk—unlike pure T-bill stablecoins, Saturn's yield leg depends on underlying corporate digital-credit instruments ('STRC') and wrapper liquidity during redemptions.",
+    ],
+  },
+  lagoon: {
+    pFinal: 0.8,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Merkl Incentives Live',
+    note: 'Open ERC-7540 vault infrastructure streaming Merkl incentives ahead of a potential Lagoon TGE.',
+    steps: [
+      "Connect to 'lagoon.finance' on Arbitrum, Base, or Ethereum and deposit USDC or WETH into active ERC-7540 vaults managed by vetted quantitative or market-neutral curators.",
+      'Filter for Lagoon vaults streaming Merkl or native partner incentives so you capture real yield and ecosystem points while building an early on-chain LP footprint ahead of a potential Lagoon TGE.',
+      "Prefer Base or Arbitrum vaults for flexible position sizing, and always inspect the vault's settlement epoch frequency (ERC-7540 vaults process deposits/withdrawals asynchronously per NAV update).",
+      'Avoid depositing into newly launched or unverified third-party curator vaults with thin TVL or opaque off-chain custody paths—stick to audited, transparent strategy mandates.',
+    ],
+  },
+  curvance: {
+    pFinal: 0.9,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — CVE Tokenomics Confirmed',
+    note: "Confirmed 'CVE' / 'veCVE' tokenomics on Monad; launch likelihood raised to 0.90.",
+    steps: [
+      "Bridge USDC, WETH, or yield-bearing Monad collateral onto Monad and supply assets into Curvance's modular money markets to earn points and qualify for the anticipated CVE TGE distribution.",
+      "Use Curvance's collateralized borrowing and automated yield-routing loops conservatively (keep health factor comfortably above '1.5') to earn both supply-side and borrow-side activity weighting.",
+      "Track official Curvance announcements regarding 'CVE' / 'veCVE' gauge launch milestones and lockup boosts so you don't miss snapshot cutoffs on Monad.",
+      'Avoid maxing out leverage in volatile Monad LST/LP markets—rapid price wicks on high-throughput chains trigger fast liquidations that erase airdrop expected value.',
+    ],
+  },
+  'galaxy-curation': {
+    pFinal: 0.08,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Public Parent (GLXY), Token Launch Unlikely',
+    note: 'Galaxy Digital is a publicly listed financial services firm (GLXY) with near-zero likelihood of issuing a separate curator token.',
+    steps: [
+      'Deposit USDC or WETH into Galaxy Curation\'s public MetaMorpho vaults ("Quality" for blue-chip safety or "Enhanced" for higher yield) on Base, Ethereum, or Arc via Morpho.',
+      "Use the Arc or Base vaults if your goal is stacking underlying chain incentives or 'MORPHO' rewards alongside Galaxy's '+11.23%' 7d growing institutional TVL.",
+      'Verify whether a specific Galaxy vault is open to retail wallets versus gated through institutional integrations like Fireblocks Earn before bridging capital.',
+      'Avoid farming Galaxy Curation expecting a native Galaxy DeFi token—Galaxy Digital is a publicly listed financial services firm (GLXY) with near-zero likelihood of issuing a separate curator token.',
+    ],
+  },
+  tydro: {
+    pFinal: 0.85,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Ink Points Stacking',
+    note: "Flagship Aave-v3 lending hub on Kraken's Ink L2; Tydro activity stacks with Ink Points ahead of an anticipated INK distribution.",
+    steps: [
+      "Bridge ETH, USDC, or wrapped BTC onto Ink (Kraken's Optimism Superchain L2) and supply assets on 'tydro.com' to farm Tydro activity and Ink Points simultaneously.",
+      'Borrow stablecoins or correlated assets (e.g., ETH against wstETH) at a safe LTV (< 60%) to boost dual-sided lending/borrowing points across both Tydro and the broader Ink ecosystem.',
+      'Pair your on-chain Tydro wallet activity with Kraken / Ink ecosystem quests (where eligible) since Ink Points unify Kraken Pro and on-chain Ink L2 usage ahead of an anticipated INK distribution.',
+      'Avoid aggressive recursive stablecoin/volatile-asset loops on Ink without monitoring borrow-rate spikes—high utilization on Aave-v3 forks can push variable borrow APR above reward value.',
+    ],
+  },
+  valos: {
+    pFinal: 0.65,
+    badges: [],
+    farmStatus: 'retail-open',
+    verdict: 'PRE-TGE FARM — Retail Route Open on Monad (Credit Risk)',
+    note: "Verified institutional private credit on Monad with real-time solvency telemetry via Accountable's Data Verification Network.",
+    steps: [
+      "Acquire Agora's AUSD stablecoin on Monad and deposit into Valos's short-term institutional credit vaults ('valos.xyz') to capture verified market-maker lending yield and Monad ecosystem exposure.",
+      "Inspect each vault's real-time solvency telemetry via Accountable's Data Verification Network (DVN) dashboard before allocating, favoring borrowers with transparent collateralization ratios.",
+      'Verify withdrawal liquidity windows (short-term institutional credit loans have maturity epochs) and confirm whether retail wallets face any KYC or minimum-deposit gates.',
+      'Avoid over-allocating emergency liquidity to private-credit pools—despite real-time DVN monitoring, institutional borrower default risk is fundamentally higher than overcollateralized DeFi lending.',
+    ],
+  },
+  'armitage-by-wintermute': {
+    pFinal: 0.08,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Wintermute is a private algorithmic trading firm with no announced token or retail points scheme.',
+    steps: [
+      "Supply USDC or ETH into Armitage-curated Morpho vaults on Ethereum mainnet to benefit from Wintermute's algorithmic risk modeling and direct liquidation execution backstop.",
+      'Allocate only meaningful clip sizes (>$25,000) on Ethereum mainnet so L1 gas fees for deposits, claims, and withdrawals stay negligible relative to base lending APY.',
+      "Check Morpho reward overlays ('MORPHO' / Merkl incentives) on Armitage vaults to evaluate true net APY against Gauntlet or Steakhouse alternatives.",
+      'Do not farm Armitage expecting a Wintermute or Armitage governance token—Wintermute is a private algorithmic trading firm with no announced token or retail points scheme.',
+    ],
+  },
+  lofty: {
+    pFinal: 0.05,
+    badges: ['INSTITUTIONAL / KYC'],
+    farmStatus: 'institutional',
+    verdict: 'INSTITUTIONAL / EQUITY — SEC-Compliant Real Estate, No Token',
+    note: 'A 51-month-old SEC-compliant fractional real-estate company issuing property-specific shares; revealed preference against a native crypto token.',
+    steps: [
+      "Recognize that Lofty is a 4+ year-old ('2022-08-04'), SEC-compliant fractional U.S. rental real-estate platform on Algorand—it issues property-specific ASA shares, not a speculative governance token.",
+      "Users seeking real-world rental income can pass KYC on 'lofty.ai', purchase $50+ fractional rental tokens on Algorand, and collect automated daily stablecoin rental payouts.",
+      'Avoid entering Lofty expecting a retroactive protocol airdrop—a 51-month equity-backed real-estate company has demonstrated a strong revealed preference against issuing a native crypto token.',
+      'Note that secondary-market liquidity for individual property tokens on Algorand can be thin, so never park short-term airdrop rotation capital here.',
+    ],
+  },
+  'doppler-finance': {
+    pFinal: 0.08,
+    badges: ['LIVE TOKEN · XDP'],
+    farmStatus: 'active-points',
+    verdict: 'LIVE TOKEN — Season 3 Points Pay XDP, Not a New TGE',
+    note: 'Doppler already has a live utility token (XDP) that the snapshot record misses; treat this as Season 3 Doppler Points farming for XDP rewards.',
+    steps: [
+      "Understand before farming that Doppler Finance already has a live utility token (XDP)—DefiLlama's snapshot flags it tokenless, so treat this as Season 3 Doppler Points (DP) farming for XDP rewards, not an unlaunched TGE.",
+      "Deposit XRP on XRPL (or supported assets on Ethereum/Base) into Doppler's CeDeFi delta-neutral yield vaults to earn base XRPfi yield plus Doppler Points.",
+      'Evaluate XDP staking only if you accept directional token price risk—Season 3 offers up to 20× DP multipliers for staking XDP, which amplifies both rewards and token drawdown risk.',
+      "Avoid overlooking CeDeFi custody risk: Doppler bridges XRP through institutional custodians (Fireblocks/Ceffu) to off-chain venues, and TVL dropped '-14.49%' over 7 days.",
+    ],
+  },
+  ember: {
+    pFinal: 0.72,
+    badges: [],
+    farmStatus: 'retail-open',
+    verdict: 'PRE-TGE FARM — Retail Route Open on Sui / Base',
+    note: 'Bluefin-incubated "Everything Vault" infrastructure across Sui, Base and Ethereum; launch likelihood set to 0.72.',
+    steps: [
+      "Deposit USDC or SUI into Ember Protocol's non-custodial share-price vaults ('ember.so') on Sui (primary TVL hub), Base, or Ethereum across RWA treasury, private credit, or delta-neutral DeFi strategies.",
+      "Prioritize Ember's Sui partner vaults (including Bluefin and Ethena/suiUSDe structured vaults) to stack base yield alongside Sui ecosystem and partner incentives.",
+      'Hold the ERC-4626-style receipt tokens across full accrual epochs and monitor Sui DeFi integrations where Ember shares may unlock secondary lending or LP multipliers.',
+      "Avoid confusing Ember's DeFi-strategy vaults (subject to funding-rate compression) with its RWA treasury vaults (subject to NAV settlement delays); match vault type to your liquidity needs.",
+    ],
+  },
+  keyrock: {
+    pFinal: 0.1,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Established institutional European market maker; unlikely to launch a retail governance token.',
+    steps: [
+      "Inspect Keyrock's newly launched ('2026-09-02') curated vaults on Arc and Ethereum via Morpho or supported lending front-ends to compare net lending APY and collateral whitelists.",
+      "Favor the Arc deployment over Ethereum mainnet if you want simultaneous exposure to Arc's emerging ecosystem incentives alongside Keyrock's curated vault yield.",
+      "Verify vault liquidity depth and concentration risk before sizing up, given the protocol's short sub-3-month live track record.",
+      'Avoid allocating pure airdrop capital for a native Keyrock token—Keyrock is an established institutional market maker unlikely to launch a retail governance token.',
+    ],
+  },
+  noble: {
+    pFinal: 0.85,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — $NOBLE Migration Announced',
+    note: 'Announced structural migration from the Cosmos IBC appchain to a standalone EVM Layer-1 supporting $NOBLE; override applies despite the missing listing date.',
+    steps: [
+      "Bridge and hold native USDC or USDN (Noble Dollar) on Noble, and actively monitor Noble's announced structural migration from its Cosmos IBC appchain to its standalone EVM Layer-1 supporting $NOBLE.",
+      "Participate in official Noble liquidity vaults, USDN yield/points campaigns, and early EVM testnet/mainnet migration tasks published exclusively on 'noble.xyz' to position for ecosystem rewards.",
+      'Maintain organic on-chain activity across IBC transfers and native Noble DeFi apps rather than last-minute single-transaction farming, which governance/chain distributions frequently filter out.',
+      'Avoid leaving bridged assets stranded on deprecated IBC routes during the EVM L1 transition, and verify official bridge URLs carefully to dodge migration-themed phishing sites.',
+    ],
+  },
+  'tori-finance': {
+    pFinal: 0.88,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Cores Points Live',
+    note: "Active Cores points program on a high-multiple basis-trading dollar with '+4.64%' 7d growth; launch likelihood set to 0.88.",
+    steps: [
+      "Deposit USDC or USDT on Ethereum ('tori.finance') to mint 'triUSD' and stake into 'striUSD' to capture delta-neutral funding-rate carry while earning Tori Cores points.",
+      "Boost Cores accumulation by deploying 'triUSD' or 'striUSD' into supported secondary DeFi integrations (Morpho lending markets or Pendle YT/LP pools) where Tori assigns higher point multipliers.",
+      'Monitor funding-rate regimes and reserve transparency dashboards—basis-trading yields compress during prolonged negative-funding bear markets even while Cores continue accruing.',
+      'Avoid paying excessive Pendle YT implied-yield premiums near maturity without modeling realistic FDV outcomes (~$84M implied at current TVL) so your points cost stays below expected airdrop value.',
+    ],
+  },
+  infinifi: {
+    pFinal: 0.9,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Points & Bonus Bytes Live',
+    note: 'Structured fractional-reserve yield with an active infiniFi Points & Bonus Bytes program; launch likelihood raised to 0.90.',
+    steps: [
+      "Deposit USDC on Ethereum, Base, or Monad ('infinifi.xyz') to mint 'iUSD', then stake into 'siUSD' (liquid) or commit to time-locked 'liUSD' buckets for higher yield and infiniFi Points / Bonus Bytes multipliers.",
+      "Deploy 'iUSD' or 'siUSD' into partnered DeFi integrations (Curve, Fluid, Pendle, or Monad native pools) to stack DeFi LP yields with boosted infiniFi Points.",
+      "Choose Base or Monad for smaller positions to keep transaction fees minimal while potentially qualifying for Monad ecosystem overlap alongside infiniFi's TGE.",
+      "Avoid locking 100% of your capital into the longest-duration 'liUSD' tranches without keeping a liquid 'siUSD' buffer, since locked buckets cannot be exited early during market stress.",
+    ],
+  },
+  axis: {
+    pFinal: 0.82,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Points Live (Young Protocol)',
+    note: "Live points program on USDx/sUSDx quantitative basis-trading vaults; young protocol ('2026-08-20', under 3 months), so size positions conservatively.",
+    steps: [
+      "Deposit stablecoins on Ethereum via 'axis.to' (or partner Origin vaults via Upshift) to mint 'USDx' and stake into 'sUSDx' for quantitative HFT/cross-market arbitrage yield and protocol points.",
+      "Check whether Axis's Upshift-integrated Origin vaults are still open—routing through Upshift can stack Axis Points and Upshift Points simultaneously on the same dollar of capital.",
+      "Size positions conservatively given Axis's young age ('2026-08-20', <3 months live) and monitor share-price NAV performance and off-exchange execution venue disclosures weekly.",
+      'Avoid mistaking Axis quantitative yield (\'axis.to\') for unrelated modular auction infrastructure ("Axis Fi") when verifying smart contracts and front-end URLs.',
+    ],
+  },
+  'reti-pooling': {
+    pFinal: 0.02,
+    badges: ['NO-TGE'],
+    farmStatus: 'no-route',
+    verdict: 'NO-TGE INFRA — Public-Good Staking Tool, No Token',
+    note: 'Open-source, non-custodial Algorand consensus staking infrastructure with no roadmap for a separate governance token.',
+    steps: [
+      'Recognize that Reti Pooling is open-source, non-custodial consensus staking infrastructure for Algorand (built by Nodely/TxnLab contributors) with no roadmap for a separate governance token.',
+      "ALGO holders with fewer than the solo-node threshold can delegate 'ALGO' through Reti pools to earn native Algorand consensus epoch rewards directly to their wallet.",
+      'Avoid bridging fresh capital onto Algorand solely to "airdrop farm" Reti Pooling—there is no points program and near-zero probability of a standalone TGE.',
+      'If delegating ALGO for native staking yield, compare validator commission rates, uptime metrics, and pool saturation caps before selecting a node operator.',
+    ],
+  },
+  'gami-labs': {
+    pFinal: 0.25,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Young Curator, Token Launch Unlikely',
+    note: "Relatively young curator ('2026-05-29') scaling quickly with '+9.03%' 7d inflows; treat any future curator incentive as unpriced optionality.",
+    steps: [
+      "Deposit stablecoins into Gami Labs' curated vaults across Base, Ethereum, or Stellar ('gamilabs.io' / integrated Morpho markets) to capture lending yield backed by '+9.03%' 7-day inflow momentum.",
+      'Prefer Base or Stellar deployments over Ethereum mainnet to minimize gas costs and tap into Stellar DeFi or Base Merkl reward incentives where active.',
+      "Inspect underlying collateral pairs and vault caps carefully before entering, as Gami Labs is a relatively young curator ('2026-05-29') scaling quickly from a smaller TVL base.",
+      'Avoid sizing positions solely for a standalone Gami Labs token launch; treat any future curator incentive as unpriced optionality on top of base lending APY.',
+    ],
+  },
+  'yuzu-money': {
+    pFinal: 0.88,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Juice Points Live',
+    note: 'Active Juice points program across Plasma and Monad structured vaults; launch likelihood set to 0.88.',
+    steps: [
+      "Deposit USDC/USDT on Plasma, Monad, or Ethereum via 'yuzu.money' to mint 'yzUSD' and stake into 'syzUSD' or 'yzPrime' structured vaults to accumulate Yuzu Juice points.",
+      'Prioritize Plasma and Monad deployments over Ethereum mainnet so a single position farms Yuzu Juice alongside high-value Plasma/Monad chain-ecosystem activity.',
+      'Use an official referral boost link and check partnered DeFi pools (e.g., Layer3 quests or Monad/Plasma DEX LPs) to multiply Juice accrual rate without adding directional crypto exposure.',
+      "Avoid ignoring risk tranching between 'syzUSD' and 'yzPrime'—structured RWA/overcollateralized credit vaults carry different subordination and withdrawal-queue profiles; note '-9.05%' 7d TVL outflow.",
+    ],
+  },
+  'mezo-earn': {
+    pFinal: 0.08,
+    badges: ['PARENT TOKEN · MEZO'],
+    farmStatus: 'no-route',
+    verdict: 'DATA TRAP — Parent Token MEZO Already Defined',
+    note: "Mezo Earn is the native incentive layer of Mezo, whose MEZO + veBTC dual-tokenomics are already defined; not an independent unlaunched TGE.",
+    steps: [
+      "Note that Mezo Earn is the native yield and governance-incentive layer of Mezo (which already uses 'MEZO' + 'veBTC' dual-tokenomics)—do not treat it as an independent unlaunched TGE.",
+      "To participate in Mezo's Bitcoin-banking economy, bridge BTC/tBTC onto Mezo, mint fixed-rate 'MUSD' stablecoins against locked BTC ('veBTC'), or deposit directly into Mezo Earn vaults.",
+      "Lock 'veBTC' (and 'veMEZO' if holding 'MEZO') only if you are comfortable with time-locked illiquidity in exchange for fee capture from swaps, bridges, and borrowing.",
+      "Avoid short-term mercenary farming on Mezo Earn given the '-12.22%' 7d TVL drop and lock-duration penalties; verify redemption depth for 'MUSD' before borrowing size.",
+    ],
+  },
+  'tulipa-capital': {
+    pFinal: 0.22,
+    badges: ['DOUBLE-COUNT'],
+    farmStatus: 'retail-open',
+    verdict: 'YIELD-FIRST POSITION — Institutional Curator, Token Launch Unlikely',
+    note: 'Performance-fee curator business with no announced TGE; the farming value is Berachain and Base reward stacking.',
+    steps: [
+      "Deposit stablecoins or ETH assets into Tulipa Capital's curated MetaMorpho / lending vaults on Base, Berachain, or Ethereum.",
+      "Target Berachain or Base vaults rather than Ethereum mainnet to capture Proof-of-Liquidity ('BGT'/ecosystem) or 'MORPHO' Merkl reward overlays while keeping gas negligible.",
+      "Review vault collateral parameters closely after Tulipa's '-9.35%' 7-day TVL dip, ensuring borrow utilization leaves adequate withdrawal liquidity.",
+      'Avoid committing dedicated pre-TGE airdrop capital expecting a native Tulipa token—like other curators, Tulipa monetizes via performance fees with no announced TGE.',
+    ],
+  },
+  firelight: {
+    pFinal: 0.8,
+    badges: [],
+    farmStatus: 'active-points',
+    verdict: 'HIGH-CONVICTION PRE-TGE FARM — Firelight Points Live',
+    note: 'Sentora-incubated Flare cover protocol with an active Firelight Points bootstrapping phase.',
+    steps: [
+      "Mint or bridge 'FXRP' (Flare's FAssets wrapped XRP) onto the Flare Network and stake it on 'firelight.finance' to receive liquid 'stXRP' while earning Firelight Points during the bootstrapping phase.",
+      "Deploy liquid 'stXRP' across Flare DeFi protocols (DEX liquidity pools or Clearstar/Mystic Morpho lending markets) to stack Flare ecosystem incentives on top of Firelight Points.",
+      "Monitor Firelight's transition into active risk-coverage phases—once cover underwriting goes live, staked capital earns cover premiums but becomes exposed to verified smart-contract claim payouts.",
+      "Avoid ignoring XRP price volatility and Flare '-14.41%' 7d TVL sensitivity; hedge directional XRP exposure via perps if your goal is purely delta-neutral Firelight Points farming.",
+    ],
+  },
+};
